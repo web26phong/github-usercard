@@ -3,6 +3,11 @@
            https://api.github.com/users/<your name>
 */
 
+axios.get("https://api.github.com/users/PHONGdotTech")
+  .then(response => {
+    document.querySelector(".cards").appendChild(createCard(response.data));
+  })
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -44,7 +49,44 @@ const followersArray = [];
   </div>
 </div>
 
+
 */
+
+function createCard(anObject){
+  const card = document.createElement("div");
+  const objectImg = document.createElement("img");
+  const cardInfo = document.createElement("div");
+  const name = document.createElement("h3");
+  const username = document.createElement("p");
+  const location = document.createElement("p");
+  const profile = document.createElement("p");
+  const profileLink = document.createElement("a");
+  const followers = document.createElement("p");
+  const following = document.createElement("p");
+  const bio = document.createElement("p");
+
+  card.classList.add("card");
+  cardInfo.classList.add("card-info");
+  name.classList.add("name");
+  username.classList.add("username");
+
+  profileLink.href=anObject.html_url;
+  objectImg.src=anObject.avatar_url;
+  name.textContent = anObject.name;
+  username.textContent = anObject.login;
+  location.textContent = `Location: ${anObject.location}`;
+  profile.textContent = "Profile: ";
+  profileLink.textContent = anObject.html_url;
+  followers.textContent = `Followers: ${anObject.followers}`;
+  following.textContent = `Following: ${anObject.following}`;
+  bio.textContent = `Bio: ${anObject.bio}`;
+
+  profile.append(profileLink);
+  cardInfo.append(name, username, location, profile, followers, following);
+  card.append(objectImg, cardInfo);
+
+  return card;
+}
 
 /* List of LS Instructors Github username's: 
   tetondan
