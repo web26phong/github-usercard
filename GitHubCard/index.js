@@ -7,6 +7,30 @@ axios.get("https://api.github.com/users/PHONGdotTech")
   .then(response => {
     document.querySelector(".cards").appendChild(createCard(response.data));
   })
+
+  //this .then only runs if my profile api can be accessed
+  .then(response => {
+    axios.get("https://api.github.com/users/PHONGdotTech/followers")
+
+    //this .then only runs if my followers array is accessed from the api above. push each username into the array
+    .then(response => {
+      response.data.forEach(item => {
+        followersArray.push(item.login);
+      })
+
+      //get each user in the followersArray's data from their profile and run that object through the createCard function
+      followersArray.forEach(item => {
+        axios.get(`https://api.github.com/users/${item}`)
+          .then(response => {
+            document.querySelector(".cards").append(createCard(response.data));
+          })
+          .catch(error => {
+            console.log("The data was not returned.", error);
+          })
+      })
+
+    })
+  })
   .catch(error => {
     console.log("The data was not returned.", error);
   })
@@ -32,17 +56,18 @@ axios.get("https://api.github.com/users/PHONGdotTech")
           user, and adding that card to the DOM.
 */
 
-const followersArray = ["IsabellaGuo", "lisabpink", "CAM603", "Adammonast", "FreedomWriter"];
+// const followersArray = ["tetondan", "dustinmyers", "justsml", "luishrd", "bigknell"];
+const followersArray = [];
 
-followersArray.forEach(item => {
-  axios.get(`https://api.github.com/users/${item}`)
-    .then(response => {
-      document.querySelector(".cards").append(createCard(response.data));
-    })
-    .catch(error => {
-      console.log("The data was not returned.", error);
-    })
-})
+// followersArray.forEach(item => {
+//   axios.get(`https://api.github.com/users/${item}`)
+//     .then(response => {
+//       document.querySelector(".cards").append(createCard(response.data));
+//     })
+//     .catch(error => {
+//       console.log("The data was not returned.", error);
+//     })
+// })
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
